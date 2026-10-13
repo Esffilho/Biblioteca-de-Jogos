@@ -100,6 +100,60 @@ router.post('/', (req, res) => {
   });
 });
 
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const validationError = validateGameData(req.body);
+
+  if (!isValidId(id)) {
+    return res.status(400).json({
+      error: 'O ID deve ser um número inteiro positivo'
+    });
+  }
+
+  if (validationError) {
+    return res.status(400).json({
+      error: validationError
+    });
+  }
+
+  const { titulo, plataforma, classificacao } = req.body;
+
+  pool.getConnection((connectionError, connection) => {
+    if (connectionError) {
+      return res.status(500).json({
+        error: 'Não foi possível conectar ao banco de dados'
+      });
+    }
+
+    connection.query(
+      'UPDATE game SET titulo = ?, plataforma = ?, classificacao = ? WHERE id = ?',
+      [titulo.trim(), plataforma.trim(), classificacao.trim(), Number(id)],
+      (queryError, result) => {
+        connection.release();
+
+        if (queryError) {
+          return res.status(500).json({
+            error: 'Não foi possível atualizar o jogo'
+          });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({
+            error: 'Jogo não encontrado'
+          });
+        }
+
+        return res.status(200).json({
+          id: Number(id),
+          titulo: titulo.trim(),
+          plataforma: plataforma.trim(),
+          classificacao: classificacao.trim()
+        });
+      }
+    );
+  });
+});
+
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
