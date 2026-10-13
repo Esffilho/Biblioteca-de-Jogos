@@ -4,10 +4,18 @@ const pool = require('../config/database');
 const router = express.Router();
 
 function isValidId(id) {
-  return /^\d+$/.test(id) && Number(id) > 0;
+  const numericId = Number(id);
+
+  return /^\d+$/.test(id)
+    && Number.isSafeInteger(numericId)
+    && numericId > 0;
 }
 
 function validateGameData(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return 'O corpo da requisição deve ser um objeto JSON';
+  }
+
   const fields = ['titulo', 'plataforma', 'classificacao'];
   const values = {};
 

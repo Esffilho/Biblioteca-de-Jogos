@@ -19,4 +19,18 @@ app.use((req, res) => {
   });
 });
 
+app.use((error, req, res, next) => {
+  if (error.type === 'entity.parse.failed') {
+    return res.status(400).json({
+      error: 'O corpo da requisição contém JSON inválido'
+    });
+  }
+
+  console.error(error);
+
+  return res.status(500).json({
+    error: 'Erro interno do servidor'
+  });
+});
+
 module.exports = app;
