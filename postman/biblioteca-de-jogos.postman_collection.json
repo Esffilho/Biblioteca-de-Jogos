@@ -1,0 +1,131 @@
+{
+  "info": {
+    "_postman_id": "f1b3b7a6-7d1b-4c76-8b7c-4c1a9c4c1f4e",
+    "name": "Biblioteca de Jogos - API",
+    "description": "Requisições para testar a API REST Biblioteca de Jogos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "gameId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Listar jogos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/game",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "game"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Consultar jogo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/game/{{gameId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "game",
+            "{{gameId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cadastrar jogo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Jogo de teste\",\n  \"plataforma\": \"PC\",\n  \"classificacao\": \"Livre\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/game",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "game"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Atualizar jogo",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Jogo de teste atualizado\",\n  \"plataforma\": \"PC\",\n  \"classificacao\": \"12 anos\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/game/{{gameId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "game",
+            "{{gameId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Excluir jogo",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/game/{{gameId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "game",
+            "{{gameId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
