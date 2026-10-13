@@ -154,6 +154,49 @@ router.put('/:id', (req, res) => {
   });
 });
 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  if (!isValidId(id)) {
+    return res.status(400).json({
+      error: 'O ID deve ser um número inteiro positivo'
+    });
+  }
+
+  pool.getConnection((connectionError, connection) => {
+    if (connectionError) {
+      return res.status(500).json({
+        error: 'Não foi possível conectar ao banco de dados'
+      });
+    }
+
+    connection.query(
+      'DELETE FROM game WHERE id = ?',
+      [Number(id)],
+      (queryError, result) => {
+        connection.release();
+
+        if (queryError) {
+          return res.status(500).json({
+            error: 'Não foi possível excluir o jogo'
+          });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({
+            error: 'Jogo não encontrado'
+          });
+        }
+
+        return res.status(200).json({
+          message: 'Jogo excluído com sucesso',
+          id: Number(id)
+        });
+      }
+    );
+  });
+});
+
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
